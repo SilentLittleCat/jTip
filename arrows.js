@@ -1,7 +1,7 @@
 var contextPath = window.location.pathname;
 (function($) {
-    var tooltipCounter = 1;
-    var elementCounter = 1;
+    var tooltipCounter = 1 ;
+    var elementCounter = 1 ;
     
     var currentPath = contextPath.substring(0,contextPath.indexOf('/'));
     
