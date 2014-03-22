@@ -22,7 +22,6 @@ $(document).ready(function(){
 			'fontSize' : '15px',
 			'borderWidth': 2,
 			'opacity' : 1,
-			'tooltipType' : 'warning',
 			'tooltipIcon' : '',
 			'displayIcon' : 'false',
 			'gapBetweenElementAndTooltip' : 15,

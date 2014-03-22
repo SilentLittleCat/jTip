@@ -1,4 +1,4 @@
-var requiredErrorMessage = ' Required ';
+	var requiredErrorMessage = ' Required ';
 	var numericErrorMessage = ' Invalid Data - Only Numbers are Allowed' ;
 	var alphaNumericErrorMessage = ' Invalid Data - Only Letters, Numbers are Allowed ' ;
 	var specifiedCharsErrorMessage = ' Invalid Data - Only a-z A-Z 0-9 space -_,.+*=!@#~?|:;% are Allowed ';
@@ -19,8 +19,8 @@ var requiredErrorMessage = ' Required ';
 		return formID;
 	}
 	
-	function getTooltipIDsOfParentElement(elem) {
-		var id = $(elem).parent().attr('id');
+	function getTooltipIDsOfElement(elem) {
+		var id = $(elem).attr('id');
 		if( id != undefined ) {
 			var tooltipIDList = $('#'+id).data('tooltipIDList');
 		
@@ -59,7 +59,7 @@ var requiredErrorMessage = ' Required ';
 	function removeError(elem) {
 		$(elem).data('fieldValid',true);
 		
-		$(elem).parent().css({
+		$(elem).css({
 			'border-top': '2px inset lightgrey',
 			'border-left': '2px inset lightgrey',
 		
@@ -72,7 +72,8 @@ var requiredErrorMessage = ' Required ';
 			'color' : 'black'
 		});
 				
-		var tooltipIDArr = getTooltipIDsOfParentElement(elem);
+		var tooltipIDArr = getTooltipIDsOfElement(elem);
+		$(elem).data('errorTooltipPresent',false);
 
 		if( tooltipIDArr != null ) {
 			$.each(tooltipIDArr,function(index,value) {
@@ -82,43 +83,50 @@ var requiredErrorMessage = ' Required ';
 	}
 	
 	function addError(elem,message) {
+		// removeError(elem); // Remove all previous errors of this element
 		$(elem).data('fieldValid',false);
 		
-		$(elem).parent().css({
-			'border' : '2px solid red'
-		});
-
 		$(elem).css({
+			'border' : '2px solid red',
 			'color' : 'red'
 		});
 
-		$(elem).parent().tooltip({
-			'alignmentType' : 'RIGHT',
-			'text' : message,
-			'height' : 40,
-			'fontWeight' : 'bold',
-			'fontSize' : '15px',
-			'borderWidth': 2,
-			'opacity' : 1,
-			'tooltipType' : 'error',
-			'tooltipIcon' : '',
-			'displayIcon' : 'false',
-
-			inputFocus : function(tte) { },
-			inputBlur : function(tte) { },			
-			inputHover : function(tte) { },
-			inputMouseOut : function(tte) { },
-			inputMouseOver : function(tte) { }
-		});
+		var errTipPresent = $(elem).data('errorTooltipPresent');
+		if( errTipPresent == undefined || errTipPresent == null || errTipPresent.length == 0 || errTipPresent == false )
+		{
+			$(elem).tooltip({
+				'alignmentType' : 'RIGHT',
+				'text' : message,
+				'height' : 40,
+				'fontWeight' : 'bold',
+				'fontSize' : '15px',
+				'borderWidth': 2,
+				'opacity' : 1,
+				'tooltipType' : 'error',
+		
+				inputFocus : function(tte) { },
+				inputBlur : function(tte) { },			
+				inputHover : function(tte) { },
+				inputMouseOut : function(tte) { },
+				inputMouseOver : function(tte) { }
+			});
+			
+			$(elem).data('errorTooltipPresent',true);
+		} else {
+			$.each(getTooltipIDsOfElement(elem),function(index,value) {
+				$('#'+value).find('span:nth-child(1)').find('span:nth-child(2)').html(message);
+			});
+		}
+		
 		
 		$(elem).focus(function(){
-			$.each(getTooltipIDsOfParentElement(elem),function(index,value) {
+			$.each(getTooltipIDsOfElement(elem),function(index,value) {
 				$('#'+value).stop().hide().show();
 			});
 		});
 	
 		$(elem).blur(function(){
-			$.each(getTooltipIDsOfParentElement(elem),function(index,value) {
+			$.each(getTooltipIDsOfElement(elem),function(index,value) {
 				$('#'+value).stop().show().hide();
 			});
 		});
@@ -466,5 +474,69 @@ $(document).ready(function() {
 		var elem = $(this).parent().find('.inputField');
 		addError(elem,$(this).html());
 	});
+
+
+	function getTooltipIDsOfElement(elem) {
+		var id = $(elem).attr('id');
+		if( id != undefined ) {
+			var tooltipIDList = $('#'+id).data('tooltipIDList');
+		
+			var tooltipIDArr = tooltipIDList.split(',');
+			return tooltipIDArr;	
+		} else
+			return null;
+	}
 	
+	function buildTooltips(elem,message) {
+
+		$(elem).tooltip({
+			'text' : message,
+			'height' : 40,
+			'fontWeight' : 'bold',
+			'fontSize' : '15px',
+			'borderWidth': 2,
+			'alignmentType': 'RIGHT',
+			'opacity' : 1,
+			'displayIcon' : 'false',
+			'gapBetweenElementAndTooltip' : 30,
+			'fontColor' : 'grey',
+			inputFocus : function(tte) { },
+			inputBlur : function(tte) { },			
+			inputHover : function(tte) { },
+			inputMouseOut : function(tte) { },
+			inputMouseOver : function(tte) { }
+		});
+		
+		$(elem).hover(function(){
+			$.each(getTooltipIDsOfElement(elem),function(index,value) {
+				$('#'+value).stop().toggle();
+			});
+		});
+	}
+	
+	// Find All Elements with Title Attribute and then build tooltips for those elements
+	$('.fieldIcon').each(function(){
+		var inputField =  $(this).parent().find('.inputField');
+		var inputTitle = $(inputField).attr('title');
+		var inputElement = $(this);
+		
+		
+		if( inputTitle == undefined || inputTitle == null )
+			return;
+		else if( inputTitle.length == 0 )
+			return;
+		
+		buildTooltips(inputElement,inputTitle);
+		
+		// To Prevent Native Tooltips by Browser, remove title attribute of this element
+		$(inputField).attr('title','');
+	});	
+	
+	$('#loginForm').on('reset',function(event){
+		$(this).find('.inputField').each(function(index,value){
+			removeError($(this));
+		});
+		
+		document.getElementById('loginForm').reset();
+	});
 });

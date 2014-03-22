@@ -1,0 +1,44 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link rel="stylesheet" type="text/css" href="tooltip.css"/>
+	
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="arrows.js"></script>
+	<script type="text/javascript" src="formValidations.js"></script>
+</head>
+
+<body>
+	<div id="pageCenterBlock">
+			
+			<div class="formBlock">
+				<form action="#" method="POST" id="loginForm">
+				<div class="fieldSection">
+					<label for="userId">  User Name </label>
+					<div class="field"  >		
+						<input type="text" name="userId" id="userId" title=" Enter your User Name or Email" class="inputField autoFocus required alphaNumeric minLength3 maxLength10"/>
+						<span class="fieldIcon"><img src="./images/info.png" width="24px" height="24px" /></span>
+					</div>
+				</div>
+				
+				<div class="fieldSection">
+					<label for="password">
+						Password
+					</label>
+					
+					<div class="field"  style="position: absolute; top:500px;left:100px;">
+						<input type="password" name="password" id="password" title="Password should be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be ofhould be of at least 6 Characters" class="inputField required specifiedChars minLength3 maxLength20"/>
+						<span class="fieldIcon"><img src="./images/info.png" width="24px" height="24px" /></span>
+					</div>
+				</div>
+				
+				<div class="buttonSection">
+					<input type="submit" value=" Login "/>
+					<input type="reset" value=" Clear "/>
+				</div>
+				
+				</form>
+			</div>
+	</div>	
+</body>
+</html>

@@ -1,46 +1,20 @@
-var contextPath = window.location.pathname;
+
 (function($) {
     var tooltipCounter = 1 ;
     var elementCounter = 1 ;
     
-    var currentPath = contextPath.substring(0,contextPath.indexOf('/'));
-    
 	$.fn.tooltip = function(settings) {
 
-		var	infoBackgroundColor = 'rgb(144,216,240)';
-		var	infoBorderColor = 'rgb(54,164,217)';
-		var	infoFontColor = 'rgb(22,96,143)';
-
-		var	warnBackgroundColor = 'rgb(250,247,170)';
-		var	warnBorderColor = 'rgb(249,232,142)';
-		var	warnFontColor = 'rgb(0,0,0)';
-		
-		var	errorBackgroundColor = 'rgb(247,152,146)';
-		var	errorBorderColor = 'rgb(206,110,111)';
-		var	errorFontColor = 'rgb(195,65,65)';
-		
-		var	statusSuccessBackgroundColor = 'rgb(207,233,170)';
-		var	statusSuccessBorderColor = 'rgb(170,219,102)';
-		var	statusSuccessFontColor = 'rgb(145,180,112)';
-		
-		var	statusErrorBackgroundColor = 'rgb(247,152,146)';
-		var	statusErrorBorderColor = 'rgb(206,110,111)';
-		var	statusErrorFontColor = 'rgb(195,65,65)';
-		
-		var	style2BackgroundColor = 'rgb(250,247,170)';
-		var	style2BorderColor = 'rgb(249,232,142)';
-		var	style2FontColor = 'rgb(220,205,136)';
-		
 		var config = {
 				 		'tooltipType' : 'info',
-				 		'tooltipIcon' : currentPath+'/img/info.png',
-				 		'backgroundColor' : '',
-						'borderColor' : '',
-						'fontColor' : '',
+				 		'tooltipIcon' : true,
+				 		'backgroundColor' : 'black',
+						'borderColor' : 'black',
+						'fontColor' : 'black',
 						'fontWeight' : 'bold',
 						'fontFamily' : 'Helvetica,Arial, Verdana',
 						'fontSize' : '12px',
-						'alignmentType' : 'LEFT',
+						'alignmentType' : 'BOTTOM-CENTER',
 						'width' : 200,
 						'height' : 40,
 						'padding' : '0px 3px 0px 3px',
@@ -84,8 +58,6 @@ var contextPath = window.location.pathname;
 			    if (settings) {
 			    	$.extend(config, settings);
 			    }
-
-			    console.log(currentPath);
 			    
 				this.each(function() {
 					var backgroundColor = config.backgroundColor;
@@ -97,13 +69,6 @@ var contextPath = window.location.pathname;
 					
 					// LEFT, TOP-LEFT, TOP-CENTER, TOP-RIGHT, RIGHT, BOTTOM-LEFT, BOTTOM-CENTER, BOTTOM-RIGHT
 					var alignmentType = config.alignmentType;	
-					//var alignmentType = "RIGHT";
-					//var alignmentType = "TOP-CENTER";
-					//var alignmentType = "TOP-LEFT";
-					//var alignmentType = "TOP-RIGHT";
-					//var alignmentType = "BOTTOM-CENTER";
-					//var alignmentType = "BOTTOM-RIGHT";
-					//var alignmentType = "BOTTOM-LEFT";
 
 					var text = config.text;
 
@@ -117,48 +82,6 @@ var contextPath = window.location.pathname;
 					var tooltipType = config.tooltipType;
 					var tooltipIcon = config.tooltipIcon;
 
-					if( tooltipIcon != null && tooltipIcon != undefined && tooltipIcon.length > 0 )
-						;
-					else {
-						switch( tooltipType ) {
-							case 'info' :
-								tooltipIcon = currentPath+'img/info.png';
-								config.backgroundColor = infoBackgroundColor;
-								config.borderColor = infoBorderColor;
-								config.fontColor = infoFontColor;
-								break;
-							case 'warning' :
-								tooltipIcon = currentPath+'img/warning.png';
-								config.backgroundColor = warnBackgroundColor;
-								config.borderColor = warnBorderColor;
-								config.fontColor = warnFontColor;
-								console.log('warn-'+warnBackgroundColor+', Bo C : '+warnBorderColor+', FC : '+warnFontColor);
-								break;
-							case 'error' :
-								tooltipIcon = currentPath+'img/error.png';
-								config.backgroundColor = errorBackgroundColor;
-								config.borderColor = errorBorderColor;
-								config.fontColor = errorFontColor;								
-								break;
-							case 'status-success' :
-								config.backgroundColor = statusSuccessBackgroundColor;
-								config.borderColor = statusSuccessBorderColor;
-								config.fontColor = statusSuccessFontColor;								
-								tooltipIcon = currentPath+'img/status-success.png';
-								break;
-							case 'status-error' :
-								tooltipIcon = './img/status-error.png';
-								config.backgroundColor = statusErrorBackgroundColor;
-								config.borderColor = statusErrorBorderColor;
-								config.fontColor = statusErrorFontColor;								
-								break;
-							default :
-								tooltipIcon = './img/info.png';
-								config.backgroundColor = infoBackgroundColor;
-								config.borderColor = infoBorderColor;
-								config.fontColor = infoFontColor;							
-						}
-					}
 					if( fontColor != null && fontColor != undefined && fontColor.length > 0 )
 						config.fontColor = fontColor;
 					if( backgroundColor != null && backgroundColor != undefined && backgroundColor.length > 0 )
@@ -166,23 +89,6 @@ var contextPath = window.location.pathname;
 					if( borderColor != null && borderColor != undefined && borderColor.length > 0 )
 						config.borderColor = borderColor;
 					var tooltipContent = "";
-
-					if( config.displayIcon === 'false' ) 
-						tooltipIcon = '';
-
-					if( tooltipIcon === '' )
-						tooltipContent = "<span></span><span>";
-					else
-						tooltipContent = "<span><img src='"+tooltipIcon+"' width='24' height='24' style='vertical-align:text-top;'/></span><span>";
-
-					if( text != null && text != undefined && text.length > 0 )
-						tooltipContent += text;
-					else
-						tooltipContent += 'This is a Tooltip ';
-
-					tooltipContent += '</span>';
-
-					tooltipElement.html(tooltipContent);
 
 					var tooltipArrow = $('<span></span>');
 					var tooltipArrowOuter = $('<span></span>');
@@ -197,14 +103,61 @@ var contextPath = window.location.pathname;
 					var hideOnClick = config.hideOnClick;
 					var opacity = config.opacity;
 					
-					if( alignmentType === 'TOP-LEFT' || alignmentType === 'TOP-CENTER' || alignmentType === 'TOP-RIGHT' ) {
-						var heightNeeded = getHeightNeeded(text,tooltipWidth,tooltipHeight);
+					if( tooltipIcon == false )
+						tooltipContent = "<span></span><span>";
+					else
+						tooltipContent = "<span class='"+tooltipIconClass+"'></span><span>";
+					
+					if( text != null && text != undefined && text.length > 0 )
+						tooltipContent += text;
+					else
+						tooltipContent += 'This is a Tooltip ';
 
-						if( heightNeeded >= tooltipHeight ) 
-							alignmentType = "BOTTOM-LEFT";
-					}	
+					tooltipContent += '</span>';
 
-					var tooltipElementProps = {
+					tooltipElement.html(tooltipContent);
+					
+					var tooltipIconClass = 'jtip-no-icon ';
+					var tooltipClass = 'jtip-default';
+						switch( tooltipType ) {
+							case "info" :
+								tooltipClass = 'jtip-info';
+								tooltipIconClass = 'jtip-icon-info';
+								break;
+							case "warn" :
+								tooltipClass = 'jtip-warn';
+								tooltipIconClass = 'jtip-icon-warn';
+								break;
+							case "error" :
+								tooltipClass = 'jtip-error';
+								tooltipIconClass = 'jtip-icon-error';
+								break;
+							case "success" :
+								tooltipClass = 'jtip-success';
+								tooltipIconClass = 'jtip-icon-success';
+								break;
+							case "fail" :
+								tooltipClass = 'jtip-fail';
+								tooltipIconClass = 'jtip-icon-fail';
+								break;
+							case "custom":
+								tooltipClass = 'jtip-custom';
+								tooltipIconClass = 'jtip-icon-custom';
+								break;
+							default :
+								tooltipClass = 'jtip-default';
+								tooltipIconClass = 'jtip-no-icon ';
+						}
+						tooltipElement.addClass(tooltipClass);
+
+						var elem = getTempElement();
+						$(elem).addClass(tooltipClass);
+						config.backgroundColor = $(elem).css("background-color");
+						config.borderColor = $(elem).css("border-left-color");
+						config.fontColor = $(elem).css('color');
+						removeTempElement(elem);
+
+						var tooltipElementProps = {
 												tooltipWidth : config.width,
 												tooltipHeight : config.height,
 												elementXPos : inputXPos,
@@ -222,9 +175,17 @@ var contextPath = window.location.pathname;
 												tooltipXPos : 0,
 												tooltipYPos : 0,
 												arrowWidth : config.arrowWidth,
-												borderWidth : config.borderWidth
+												borderWidth : config.borderWidth,
+
+												fontWeight : config.fontWeight,
+												fontFamily : config.fontFamily,
+												fontSize : config.fontSize,
+												padding : '0px 3px 0px 3px',												
+												heightNeeded : 40
 											  };
 
+					tooltipElementProps.heightNeeded = getHeightNeeded(text,tooltipElementProps);
+											  
 					positionTooltip(tooltipElementProps);
 
 					tooltipElement.css({
@@ -264,59 +225,7 @@ var contextPath = window.location.pathname;
 					$('body').append(tooltipContainerElement);
 
 					if( visibility === 'hidden' )
-						$('#'+tooltipID).hide();
-
-					// Default Event Bindings
-					// Bind Events to Input Element
-/*					inputElement.bind("mouseout",function(){
-						//hide(tooltipID);
-					});
-					
-					inputElement.bind("mouseover",function(){
-						//show(tooltipID);
-					});	
-
-					inputElement.bind("focus",function(){
-					//	show(tooltipID);
-					});
-
-					inputElement.bind("blur",function(){
-						//hide(tooltipID);
-					});
-					
-					inputElement.bind("click",function(){
-						//show(tooltipID);
-					});
-					
-					inputElement.bind("hover",function(){
-						//show(tooltipID);
-					});
-					
-					// Bind Events to Tool tip Element
-					$('#'+tooltipID).bind("mouseout",function(){
-						hide(tooltipID);
-					});
-					
-					$('#'+tooltipID).bind("mouseover",function(){
-						show(tooltipID);
-					});
-
-					$('#'+tooltipID).bind("focus",function(){
-						//show(tooltipID);
-					});
-
-					$('#'+tooltipID).bind("blur",function(){
-						//hide(tooltipID);
-					});
-					
-					$('#'+tooltipID).bind("click",function(){
-						//hide(tooltipID);
-					});
-					
-					$('#'+tooltipID).bind("hover",function(){
-						//hide(tooltipID);
-					});
-*/
+						;//$('#'+tooltipID).hide();
 					
 					// Bind Events to Input Element based on user defined functions
 					inputElement.bind("mouseout",function(){
@@ -368,12 +277,6 @@ var contextPath = window.location.pathname;
 						config.tteHover.call(this,$('#'+tooltipID));
 					});
 
-/*
-					$(document).click(function(e){
-					    //display the x and y axis values inside the P element
-					    console.log("X Axis : " + e.pageX + " | Y Axis " + e.pageY);
-					});
-*/
 					var elementID = inputElement.attr('id');
 					if( elementID == null || elementID == undefined || elementID.length == 0 ) {
 						elementID = inputElement.prop('tagName')+'-'+elementCounter;
@@ -499,29 +402,39 @@ var contextPath = window.location.pathname;
 		function alignTopLeft( tteProps ) {
 			tteProps.tooltipXPos = tteProps.elementXPos ;
 			tteProps.tooltipYPos = tteProps.elementYPos - tteProps.tooltipHeight - tteProps.gapBetweenElementAndTooltip;
-			
+			if( (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) > tteProps.tooltipHeight )
+				tteProps.tooltipYPos = tteProps.elementYPos - tteProps.heightNeeded - tteProps.gapBetweenElementAndTooltip;
+
 			tteProps.arrowAlignmentType = "BOTTOM-LEFT";
 			if( tteProps.tooltipXPos < 0 )
 				alignTopRight(tteProps);
 			else if( tteProps.tooltipYPos < 0 )
 				alignBottomLeft(tteProps);
+			else if( tteProps.elementYPos < (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) )
+				alignBottomLeft(tteProps);
 		}
 		
 		function alignTopCenter( tteProps ) {
-			tteProps.tooltipXPos = (tteProps.elementXPos + tteProps.elementWidth )/2 - (tteProps.tooltipWidth)/2;
+			tteProps.tooltipXPos = (tteProps.elementXPos + tteProps.elementWidth ) - (tteProps.tooltipWidth)/2;
 			tteProps.tooltipYPos = tteProps.elementYPos - tteProps.tooltipHeight - tteProps.gapBetweenElementAndTooltip;
-
+			if( (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) > tteProps.tooltipHeight )
+				tteProps.tooltipYPos = tteProps.elementYPos - tteProps.heightNeeded - tteProps.gapBetweenElementAndTooltip;
+				
 			tteProps.arrowAlignmentType = "BOTTOM-CENTER";
 
 			if( tteProps.tooltipXPos < 0 )
 				alignTopRight(tteProps);
 			else if( tteProps.tooltipYPos < 0 )
 				alignBottomCenter(tteProps);
+			else if( tteProps.elementYPos < (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) )
+				alignBottomCenter(tteProps);				
 		}
 		
 		function alignTopRight( tteProps ) {
 			tteProps.tooltipXPos = tteProps.elementXPos + tteProps.elementWidth - (tteProps.tooltipWidth + (2*tteProps.borderWidth) + (2*tteProps.borderWidth) ) ;
 			tteProps.tooltipYPos = tteProps.elementYPos - tteProps.tooltipHeight - tteProps.gapBetweenElementAndTooltip;
+			if( (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) > tteProps.tooltipHeight )
+				tteProps.tooltipYPos = tteProps.elementYPos - tteProps.heightNeeded - tteProps.gapBetweenElementAndTooltip;
 
 			tteProps.arrowAlignmentType = "BOTTOM-RIGHT";
 
@@ -529,6 +442,8 @@ var contextPath = window.location.pathname;
 				alignTopLeft(tteProps);
 			else if( tteProps.tooltipYPos < 0 )
 				alignBottomRight(tteProps);
+			else if( tteProps.elementYPos < (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) )
+				alignBottomRight(tteProps);				
 		}
 		
 		function alignBottomLeft( tteProps ) {
@@ -718,6 +633,14 @@ var contextPath = window.location.pathname;
 		}
 		
 		function alignArrowBottomLeft(tteProps) {
+			var top =  tteProps.tooltipYPos + (tteProps.tooltipHeight - (tteProps.borderWidth + (tteProps.borderWidth/2))) ;
+			if( (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) > tteProps.tooltipHeight )
+				top = tteProps.tooltipYPos + tteProps.heightNeeded - tteProps.borderWidth;
+			
+			var topOuter = tteProps.tooltipYPos + tteProps.tooltipHeight + tteProps.borderWidth ;
+			if( (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) > tteProps.tooltipHeight )
+				topOuter = tteProps.tooltipYPos + tteProps.heightNeeded + tteProps.borderWidth  ;
+
 			/* Arrow-Bottom-Left Class */
 			tteProps.tooltipArrow.css({
 								'width' : '0',
@@ -739,7 +662,7 @@ var contextPath = window.location.pathname;
 			tteProps.tooltipArrow.css({
 								'position' : 'absolute',
 								'left' : tteProps.tooltipXPos + (tteProps.arrowWidth) ,
-								'top' : tteProps.tooltipYPos + tteProps.tooltipHeight - (tteProps.borderWidth+(tteProps.borderWidth/2)) ,
+								'top' : top ,
 
 								'z-index' : '1000'
 							});
@@ -765,11 +688,19 @@ var contextPath = window.location.pathname;
 			tteProps.tooltipArrowOuter.css({
 				'position' : 'absolute',
 				'left' : tteProps.tooltipXPos + (tteProps.arrowWidth) ,
-				'top' : tteProps.tooltipYPos + tteProps.tooltipHeight + tteProps.borderWidth 
+				'top' : topOuter
 			});
 		}
 
 		function alignArrowBottomCenter(tteProps) {
+			var top =  tteProps.tooltipYPos + (tteProps.tooltipHeight - (tteProps.borderWidth + (tteProps.borderWidth/2))) ;
+			if( (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) > tteProps.tooltipHeight )
+				top = tteProps.tooltipYPos + tteProps.heightNeeded - tteProps.borderWidth;
+			
+			var topOuter = tteProps.tooltipYPos + tteProps.tooltipHeight + tteProps.borderWidth ;
+			if( (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) > tteProps.tooltipHeight )
+				topOuter = tteProps.tooltipYPos + tteProps.heightNeeded + tteProps.borderWidth  ;
+
 			/* Arrow-Bottom-Center Class */
 			tteProps.tooltipArrow.css({
 								'width' : '0',
@@ -791,7 +722,7 @@ var contextPath = window.location.pathname;
 			tteProps.tooltipArrow.css({
 								'position' : 'absolute',
 								'left' : tteProps.tooltipXPos + (tteProps.tooltipWidth/2) - (tteProps.arrowWidth) ,
-								'top' : tteProps.tooltipYPos + tteProps.tooltipHeight - (tteProps.borderWidth - (tteProps.borderWidth/2) ) ,
+								'top' : top ,
 
 								'z-index' : '1000'
 							});
@@ -817,11 +748,19 @@ var contextPath = window.location.pathname;
 			tteProps.tooltipArrowOuter.css({
 				'position' : 'absolute',
 				'left' : tteProps.tooltipXPos + (tteProps.tooltipWidth/2) - (tteProps.arrowWidth) ,
-				'top' : tteProps.tooltipYPos + tteProps.tooltipHeight + tteProps.borderWidth
+				'top' : topOuter
 			});			
 		}
 
 		function alignArrowBottomRight(tteProps) {
+			var top =  tteProps.tooltipYPos + (tteProps.tooltipHeight - (tteProps.borderWidth + (tteProps.borderWidth/2))) ;
+			if( (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) > tteProps.tooltipHeight )
+				top = tteProps.tooltipYPos + tteProps.heightNeeded - tteProps.borderWidth;
+			
+			var topOuter = tteProps.tooltipYPos + tteProps.tooltipHeight + tteProps.borderWidth ;
+			if( (tteProps.heightNeeded-tteProps.gapBetweenElementAndTooltip) > tteProps.tooltipHeight )
+				topOuter = tteProps.tooltipYPos + tteProps.heightNeeded + tteProps.borderWidth  ;
+
 			/* Arrow-Bottom-Right Class */
 			tteProps.tooltipArrow.css({
 								'width' : '0',
@@ -843,7 +782,7 @@ var contextPath = window.location.pathname;
 			tteProps.tooltipArrow.css({
 								'position' : 'absolute',
 								'left' : tteProps.tooltipXPos + tteProps.tooltipWidth - (2*tteProps.arrowWidth) - (tteProps.arrowWidth/2) ,
-								'top' : tteProps.tooltipYPos + (tteProps.tooltipHeight - (tteProps.borderWidth + (tteProps.borderWidth/2))) ,
+								'top' : top ,
 
 								'z-index' : '1000'
 							});
@@ -869,7 +808,7 @@ var contextPath = window.location.pathname;
 			tteProps.tooltipArrowOuter.css({
 				'position' : 'absolute',
 				'left' : tteProps.tooltipXPos+ tteProps.tooltipWidth - (2*tteProps.arrowWidth) - (tteProps.arrowWidth/2),
-				'top' : tteProps.tooltipYPos + tteProps.tooltipHeight + tteProps.borderWidth 
+				'top' : topOuter
 			});			
 		}
 
@@ -977,27 +916,55 @@ var contextPath = window.location.pathname;
 			});				
 		}
 
-		function getHeightNeeded(content,actualWidth,actualHeight) {
+		function getTempElement() {
+			var div = document.createElement("span");
+			div.style.position="absolute";
+		    div.style.top="0px";
+		    div.style.left="0px";
+		    
+		    div.style.width="0px";
+		    document.body.appendChild(div);			
+			return div;
+		}
+		
+		function removeTempElement(elem){
+			$(elem).remove();
+		}
+		function getHeightNeeded(content,tteProps) {
 		    var text = content;
 		    var div = document.createElement("span");
-		    div.style.position="absolute";
-		    div.style.top="111px";
-		    div.style.left="111px";
+		    div.style.position="fixed";
+		    div.style.top="0px";
+		    div.style.left="0px";
 		    
-		    div.style.width=actualWidth+"px";
-		    div.style.minHeight = "40px";
+		    div.style.width= tteProps.tooltipWidth+"px";
+//		    div.style.minHeight = "40px";
 		    div.style.overflow="auto";
 		    div.style.wordWrap = "break-word";
+			div.style.borderWidth = tteProps.borderWidth;
+			div.style.borderRadius = tteProps.borderRadius;
+
+			div.style.backgroundColor = tteProps.backgroundColor;
+			div.style.borderColor = tteProps.borderColor;
+			div.style.color = tteProps.color;
+			
+			div.style.fontWeight = tteProps.fontWeight;
+			div.style.fontSize = tteProps.fontSize;
+			div.style.padding = tteProps.padding;
+			div.style.fontFamily = tteProps.fontFamily;
+
 		    div.id = "wid";
 		    div.innerHTML=text;
 		    document.body.appendChild(div);
 		    
 		    var w = document.getElementById("wid").offsetHeight;
-		    var w1= document.getElementById("wid").scrollHeight;
+		    var w1= document.getElementById('wid').scrollHeight;
+
+			console.log('OH : '+w+', SH : '+w1);
 
 		    $('#wid').remove();
 
-		    return w;
+		    return (w1);
 		}
 		/* Allow jQuery chaining */
 		return this;
